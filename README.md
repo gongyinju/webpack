@@ -1,10 +1,10 @@
-# vue-webpack-boilerplate
+# 自定义的s3vue-webpack-cli模版
 
-> A full-featured Webpack setup with hot-reload, lint-on-save, unit testing & css extraction.
+> 专门针对S3类型的项目进行架构的模版
 
-> This template is Vue 2.0 compatible. For Vue 1.x use this command: `vue init webpack#1.0 my-project`
+> 基于Vue2.0的 [vue-cli](https://github.com/vuejs/vue-cli) 和 [webpack-tempaltes](https://github.com/vuejs-templates/webpack)自定义
 
-## Documentation
+## 文件结构
 
 - [For this template](http://vuejs-templates.github.io/webpack): common questions specific to this template are answered and each part is described in greater detail
 - [For Vue 2.0](http://vuejs.org/guide/): general information about how to work with Vue, not specific to this template

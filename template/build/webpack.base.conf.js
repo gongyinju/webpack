@@ -39,6 +39,7 @@ module.exports = {
     }
   },
   module: {
+    rules: [
     {{#lint}}
       ...(config.dev.useEslint ? [createLintingRule()] : []),
     {{/lint}}
