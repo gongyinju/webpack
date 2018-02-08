@@ -1,14 +1,16 @@
 {
-  "name": "s3",
+  "name": "{{ name }}",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "chent <chent.zju@gmail.com>",
+  "description": "{{ description }}",
+  "author": "{{ author }}",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "mock": "node server/app.js",
-    "lint": "eslint --ext .js,.vue src",
+    {{#lint}}
+    "lint": "eslint --ext .js,.vue src{{#unit}} test/unit{{/unit}}{{#e2e}} test/e2e/specs{{/e2e}}",
+    {{/lint}}
     "build-components": "node build/build-components.js",
     "build": "node build/build.js"
   },
@@ -34,15 +36,18 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "element-ui": "^2.1.0",
+    {{#lint}}
+    "babel-eslint": "^7.2.3",
     "eslint": "^4.15.0",
-    "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-vue": "^4.0.0",
+    "eslint-config-standard": "^10.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
-    "eslint-plugin-vue": "^4.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    {{/lint}}
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",

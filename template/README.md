@@ -1,6 +1,6 @@
-# s3
-
-> A Vue.js project
+# {{ name }}
+ 
+> {{ description }}
 
 ## Build Setup
 
@@ -8,8 +8,17 @@
 # install dependencies
 npm install
 
+# lint test
+npm run lint
+
+# servie with mock server at localhost:3000
+npm run mock
+
 # serve with hot reload at localhost:8080
 npm run dev
+
+# build for components
+npm run build-components
 
 # build for production with minification
 npm run build

@@ -8,7 +8,7 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const createLintingRule = () => ({
+{{#lint}}const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
   enforce: 'pre',
@@ -17,7 +17,7 @@ const createLintingRule = () => ({
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
-})
+}){{/lint}}
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -39,8 +39,9 @@ module.exports = {
     }
   },
   module: {
-    rules: [
+    {{#lint}}
       ...(config.dev.useEslint ? [createLintingRule()] : []),
+    {{/lint}}
       {
         test: /\.vue$/,
         loader: 'vue-loader',
