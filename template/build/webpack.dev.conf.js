@@ -44,6 +44,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     }
   },
+  externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'vuetify': 'Vuetify',
+    'element-ui': 'ElementUI',
+    'axios': 'axios'
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')

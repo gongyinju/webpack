@@ -1,0 +1,36 @@
+[
+  {
+    "module": "async",
+    "router": [
+      {
+        "path": "/",
+        "url": "http://localhost:3000/static/async.js"
+      },
+      {
+        "path": "/detail",
+        "url": "http://localhost:3000/static/async2.js"
+      },
+      {
+        "path": "/componentA",
+        "url": "http://localhost:3000/static/Test.49b7d700efaad7a63149.js"
+      }
+    ]
+  },
+  {
+    "module": "outer",
+    "router": [
+      {
+        "path": "/",
+        "url": "http://localhost:3000/static/compnentA.49b7d700efaad7a63149.js"
+      },
+      {
+        "path": "/detail",
+        "url": "http://localhost:3000/static/compnentB.49b7d700efaad7a63149"
+      },
+      {
+        "path": "/componentA",
+        "url": "http://localhost:3000/static/componentA.49b7d700efaad7a63149.js"
+      }
+    ]
+  }
+]
