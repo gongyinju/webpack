@@ -5,9 +5,8 @@ const webpackConfig = require('./webpack.dev.conf')
 const config = require('../config')
 const compiler = webpack(webpackConfig)
 const express = require('express')
-const mock = require('./mock-server')
+const mockapi = require('./mock-server')
 const app = express()
-
   
 //允许跨域  
 app.all('*', function(req, res, next) {  
@@ -30,7 +29,6 @@ app.use(webpackHotMiddleware(compiler))
 app.use('/components',express.static('dist/components'))
 
 //mock api
-app.use('/api', mock.mock())
+app.use('/api',mockapi.mock())
 
-
-app.listen(config.dev.port, () => console.log('你的项目已经运行在http://%s:%s请打开浏览器访问',config.dev.host,config.dev.port))
+app.listen(config.dev.port, () => console.log('你的项目已经运行在http://%s:%s请等待编译完成后打开浏览器访问',config.dev.host,config.dev.port))

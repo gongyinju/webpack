@@ -82,8 +82,10 @@ const dynamicRouter = function (router, outerRouter) {
 
 // 向服务器请求config配置
 axios.get('http://localhost:8080/api/router',{}).then(function (result) {
-  dynamicRouter(router, result.data)
-  /* eslint-disable no-new */
+  if(result.data.status == '000'){
+    dynamicRouter(router, result.data.data)
+  }
+    /* eslint-disable no-new */
   new Vue({
     el: '#app',
     router,

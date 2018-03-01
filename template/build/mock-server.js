@@ -1,26 +1,34 @@
-const path = require('path')
-const Mock = require('mockjs')
-const fs = require('fs')
+var fs = require('fs');
+
+function processData (mockObj) {
+    var res = {
+        ESPRESSO_RETURN_VERSION: '1.0',
+        status: '000',
+        data: mockObj
+    }
+    return res
+}
 
 
-module.exports.mock = function(){
-    return function(req,res,next){
-        let url = req.url.indexOf('/') === 0 ? req.url:'/' + req.url
-        console.log('requrest for '+ url)
-        let jsonFile = 'mocks'+url+'.json'
-        fs.readFile(jsonFile,(error,fileStr)=>{
-            if(error){
-                console.log('cannot find mock file: '+ jsonFile)
+module.exports = {
+    mock: function(){
+        return function(req,res,next){
+            let url = req.url.indexOf('/') === 0 ? req.url:'/' + req.url;
+            console.log('requrest for '+ url)
+            let jsonFile = './mocks'+url+'.json'
+            fs.readFile(jsonFile,(error,fileStr)=>{
                 let mockObj = {
-                    retCode: "404",
-                    retMsg: "undefined api"
+                    retCode: '404',
+                    retMsg: 'api not exist'
                 }
-                res.json(Mock.mock(mockObj))
-                res.end()
-            }
-            // let mockObj = JSON.parse(fileStr)
-            res.send(fileStr)
-            res.end()
-        })
+                if(error){
+                    console.log('cannot find mock file: '+ jsonFile)
+                }else{
+                    mockObj = JSON.parse(fileStr)
+                }
+                res.set('content-type', 'application/json')
+                res.send(processData(mockObj))
+            })
+        }
     }
 }
