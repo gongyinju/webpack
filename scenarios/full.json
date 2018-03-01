@@ -6,6 +6,7 @@
   "build": "runtime",
   "router": false,
   "lint": true,
+  "standard": false,
   "lintConfig": "standard",
   "unit": true,
   "runner": "jest",

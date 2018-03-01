@@ -2,7 +2,7 @@ const JSLoader = {
   name: 'js-loader',
   render (createElement) {
     var self = this
-    if (!window.istore.getItemLocal[this.url]) {
+    if (!window.istore.getItemLocal(this.url)) {
       return createElement('script', {
         attrs: {
           type: 'text/javascript', src: self.url

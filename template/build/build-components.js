@@ -30,8 +30,7 @@ webpack(webpackConfig, function (err, stats) {
 
   console.log(chalk.cyan('  Build complete.\n'))
   console.log(chalk.yellow(
-    '  Tip: 你的组件已经构建完成，可以使用了.\n'+
-    '请到对应的配置地址获得'
+    'Tip: 你的组件已经构建完成，可以使用了.构建后的组件输出在dist/components下。根据你的router-export配置,生成了路由配置文件,在mocks/router.json' 
   ))
 })
 

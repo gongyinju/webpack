@@ -56,6 +56,11 @@ module.exports = {
       type: 'confirm',
       message: 'Use ESLint to lint your code?',
     },
+    standard: {
+      when: 'isNotTest',
+      type: 'confirm',
+      message: '是标准项目吗?',
+    },
     autoInstall: {
       when: 'isNotTest',
       type: 'list',

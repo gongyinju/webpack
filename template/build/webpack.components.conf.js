@@ -1,11 +1,11 @@
+'use strict'
 const webpack = require('webpack')
 const path = require('path')
 const utils = require('./utils')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const outerComponents = require('../config/outerComponents')
-const S3Plugin = require('./S3Plugin')
-const fs = require('fs')
+const exportConfig = require('../src/router/router-export')
+const EmitRouterPlugin = require('./EmitRouterPlugin')
 
 /**
  * filename, 必选参数，文件名
@@ -17,72 +17,22 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function resolveComponents(modules){
+function resolveExports(routes){
   let entry = {}
-  modules.forEach((module) => {
-    module.components.forEach((item) => {
-      if (!entry[item.name]) {
-        entry[item.name] = resolve(item.url)
-      }
-    })
+  routes.forEach((component) => {
+    if (!entry[component.component]) {
+      entry[component.component] = resolve(component.dir)
+    }
   })
   return entry
 }
 
-function createRouterJson (compilation) {
-  var chunk = compilation.chunks[0]
-  var jsFile = chunk.files[0]
-  console.log(chunk)
-}
-
-function complyCallback (files) {
-  console.log('你的组件已经输出文成，输出路径在:'+outerComponents.output+'目录下')
-  let router = []
-  outerComponents.modules.forEach((configModule) => {
-    let routerModule = {
-      module: configModule.module,
-      router: []
-    }
-    configModule.components.forEach((configComponent) => {
-      let name = ''
-      files.forEach((filename) => {
-        if (filename.indexOf(configComponent.name)) {
-          name = filename
-        }
-      })
-      routerModule.router.push({
-        path: configComponent.path,
-        url: name
-      })
-    })
-    router.push(routerModule)
-  })
-  writeJson(JSON.stringify(router))
-}
-
-function writeJson (data) {
-  var w_data = new Buffer(data)
-  fs.writeFile(resolve('server/mocks/router.json'), w_data,{}, function (err) {
-    if (err) {
-      console.error(err)
-    } else {
-      // console.log('你的独立组件已经写入server/mocks/router.json文件中，请根据需要进行优化')
-    }
-  })
-  fs.writeFile(resolve(outerComponents.output+'/router.json'), w_data,{}, function (err) {
-    if (err) {
-      console.error(err)
-    } else {
-      console.log('你的独立组件已经写入'+outerComponents.output+'文件夹的router.json文件中，请根据需要进行优化')
-    }
-  })
-}
-
 module.exports = {
-  entry: resolveComponents(outerComponents.modules),
+  entry: resolveExports(exportConfig.routes),
   output: {
-    path: resolve(outerComponents.output),
-    filename: '[name].[hash].js',
+    path: resolve('dist/components'),
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -149,15 +99,19 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(resolve(outerComponents.output)),
+    new CleanWebpackPlugin(resolve('dist/components')),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-    new S3Plugin(complyCallback),
     // UglifyJs do not support ES6+, you can also use babel-minify for better treeshaking: https://github.com/babel/minify
     // new webpack.optimize.UglifyJsPlugin({
-    //   compress: false,
-    //   sourceMap: true
+    //   uglifyOptions: {
+    //     compress: {
+    //       warnings: false
+    //     }
+    //   },
+    //   sourceMap: true,
+    //   parallel: true
     // }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -165,6 +119,7 @@ module.exports = {
       cssProcessorOptions: {
         safe: true
       }
-    })
+    }),
+    new EmitRouterPlugin(exportConfig)
   ]
 }

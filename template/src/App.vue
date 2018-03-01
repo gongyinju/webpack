@@ -4,13 +4,11 @@
     <v-toolbar app>
        一个简陋的例子
     </v-toolbar>
-
     <v-content>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
-
     <v-footer app>2018</v-footer>
   </v-app>
   </div>

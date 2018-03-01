@@ -2,7 +2,7 @@ const CSSLoader = {
   name: 'css-loader',
   render (createElement) {
     var self = this
-    if (!window.istore.getItemLocal[this.url]) {
+    if (!window.istore.getItemLocal(this.url)) {
       return createElement('link', {
         attrs: {type: 'text/css', rel: 'stylesheet', href: self.url},
         on: {

@@ -5,12 +5,41 @@
   * 指定挂载的webpack事件钩子。
   * 处理webpack内部实例的特定数据。
   * 功能完成后调用webpack提供的回调
+  * EmitFilePlugin
+  * 导出组件的时候使用的插件
+  * 主要是为了获得插件的导出hash
+  * 如果配置了地址，可以直接将地址封装在导出地址的router配置上
   */
-class S3Plugin { 
-  
-  constructor(props){
-    this.callback = props
+const fs = require('fs')
+const path = require('path')
+
+function resolve(dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+
+function exportJson(data){
+  // 输出文件
+  var w_data = new Buffer(data)
+  fs.writeFile(resolve('mocks/router.json'), w_data,{}, function (err) {
+    if (err) {
+      console.error(err)
+    } else {
+      console.log('生成路由配置文件...')
+    }
+  })
+}
+
+class EmitRouterPlugin { 
+
+  constructor(options){
+    this.router = []
+    this.module = options.module || ''
+    this.url = options.url || 'http://localhost:8080/components/'
+    this.routes = options.routes || []
   }
+
+
   // a method on prototype
   apply (compiler) {
   	let self = this
@@ -26,12 +55,10 @@ class S3Plugin {
 
     // compilation（'编译器'对'编译ing'这个事件的监听）
     compiler.plugin("compilation", function(compilation) {
-      console.log("编译器正在对组件进行处理...")
       // 在compilation事件监听中，我们可以访问compilation引用，它是一个代表编译过程的对象引用
       // 我们一定要区分compiler和compilation，一个代表编译器实体，另一个代表编译过程
       // optimize('编译过程'对'优化文件'这个事件的监听)
       compilation.plugin("optimize", function() {
-        console.log("编译器正在优化组件中...")
       })
     })
 
@@ -50,9 +77,27 @@ class S3Plugin {
         })
       })
 
+          // get Router json
+      self.routes.forEach((route) => {
+        let name = ''
+        files.forEach((filename) => {
+          if (filename.indexOf(route.component) > -1) {
+            name = filename
+          }
+        })
+
+        self.router.push({
+          path: self.module + route.path,
+          url: self.url+name
+        })
+
+      })
+
+      exportJson(JSON.stringify(self.router))
       // callback在最后必须调用
-      typeof self.callback === 'function' && self.callback(files)
+      callback()
     })
   }
-} 
-module.exports = S3Plugin
+
+}
+module.exports = EmitRouterPlugin

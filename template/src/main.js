@@ -7,10 +7,18 @@ import router from './router'
 import store from './store'
 import {HttpProtptype, AsyncComponent, JSLoader, CSSLoader} from './global'
 import axios from 'axios'
-import('./../node_modules/vuetify/dist/vuetify.min.css')
+
+// global plugin
+Vue.use(HttpProtptype)
+Vue.use(AsyncComponent)
+Vue.use(JSLoader)
+Vue.use(CSSLoader)
+Vue.use(Vuetify)
+Vue.config.productionTip = false
+
 
 // global
-if (window.localStorage && (window.localStorage.setItem('a', 123), window.localStorage.getItem('a') === 123)) {
+if (window.localStorage && (window.localStorage.setItem('a', 123), window.localStorage.getItem('a') === '123')) {
   window.istore = {
     getItemLocal (key) {
       if (localStorage.getItem(key)) {
@@ -41,24 +49,6 @@ if (window.localStorage && (window.localStorage.setItem('a', 123), window.localS
   window.istore = storage
 }
 
-// global plugin
-Vue.use(Vuetify, {
-  theme: {
-    primary: '#1976D2',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107'
-  }
-})
-Vue.use(HttpProtptype)
-Vue.use(AsyncComponent)
-Vue.use(JSLoader)
-Vue.use(CSSLoader)
-Vue.config.productionTip = false
-
 // dynamic router
 const loader = function (resolve, url) {
   if (!window.istore.getItemLocal[url]) {
@@ -72,41 +62,26 @@ const loader = function (resolve, url) {
   }
 }
 
-const dynamicRouter = function (router, outerModules) {
+const dynamicRouter = function (router, outerRouter) {
   try {
-    outerModules.forEach(function (outModule) {
-      let module = outModule.module
-      let outerRouter = outModule.router
-      outerRouter.forEach(function (item) {
-        let path = '/' + module + item['path']
-        router.addRoutes([
-          {
-            path: path,
-            component: function (resolve) {
-              loader(resolve, item['url'])
-            }
+    outerRouter.forEach(function (item) {
+      let path = '/' + item['path']
+      router.addRoutes([
+        {
+          path: path,
+          component: function (resolve) {
+            loader(resolve, item['url'])
           }
-        ])
-      })
+        }
+      ])
     })
   } catch (e) {
     throw new Error('你的个性化路由配置似乎出错了!')
   }
 }
 
-const contextPath = (function () {
-  let pathName = window.location.pathname
-  let pathAry = pathName.split('/')
-  if (pathAry.length > 2) {
-    return pathAry[1]
-  } else {
-    return ''
-  }
-})()
-
 // 向服务器请求config配置
-axios.get('http://localhost:3000/api/router').then(function (result) {
-  console.log(result)
+axios.get('http://localhost:8080/api/router',{}).then(function (result) {
   dynamicRouter(router, result.data)
   /* eslint-disable no-new */
   new Vue({
@@ -117,6 +92,13 @@ axios.get('http://localhost:3000/api/router').then(function (result) {
     template: '<App/>'
   })
 }, function (error) {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>'
+  })
   // 没读取到配置 404
   throw new Error(error)
 })

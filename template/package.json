@@ -1,21 +1,22 @@
 {
-  "name": "{{ name }}",
+  "name": "s3",
   "version": "1.0.0",
-  "description": "{{ description }}",
-  "author": "{{ author }}",
+  "description": "A Vue.js project",
+  "author": "chent <chent.zju@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
+    "dev2": "node build/dev-server.js",
+    "start": "npm run dev && npm run mock",
     "mock": "node server/app.js",
-    {{#lint}}
-    "lint": "eslint --ext .js,.vue src{{#unit}} test/unit{{/unit}}{{#e2e}} test/e2e/specs{{/e2e}}",
-    {{/lint}}
-    "build-components": "node build/build-components.js",
+    "lint": "eslint --ext .js,.vue src",
+    "build-component": "node build/build-components.js",
     "build": "node build/build.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "element-ui": "^2.1.0",
+    "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
@@ -35,24 +36,20 @@
     "clean-webpack-plugin": "^0.1.18",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
-    "element-ui": "^2.1.0",
-    {{#lint}}
-    "babel-eslint": "^7.2.3",
     "eslint": "^4.15.0",
+    "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
-    "eslint-plugin-vue": "^4.0.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
-    {{/lint}}
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-vue": "^4.0.0",
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
-	"fs": "0.0.1-security",
+    "fs": "0.0.1-security",
     "html-webpack-plugin": "^2.30.1",
     "mockjs": "^1.0.1-beta3",
     "node-notifier": "^5.1.2",
@@ -73,7 +70,9 @@
     "vuetify": "^0.17.7",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-dev-middleware": "^2.0.6",
     "webpack-dev-server": "^2.9.1",
+    "webpack-hot-middleware": "^2.21.0",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
