@@ -48,12 +48,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   //   }
   // },
   externals: {
-    'vue': 'Vue',
-    'vue-router': 'VueRouter',
-    'vuex': 'Vuex',
-    'vuetify': 'Vuetify',
-    'element-ui': 'ElementUI',
-    'axios': 'axios'
   },
   plugins: [
     new webpack.DefinePlugin({

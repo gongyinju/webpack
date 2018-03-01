@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import App from './App'
 import Vuetify from 'vuetify'
 import router from './router'
@@ -9,6 +10,7 @@ import {HttpProtptype, AsyncComponent, JSLoader, CSSLoader} from './global'
 import axios from 'axios'
 
 // global plugin
+Vue.use(VueRouter)
 Vue.use(HttpProtptype)
 Vue.use(AsyncComponent)
 Vue.use(JSLoader)
@@ -81,7 +83,7 @@ const dynamicRouter = function (router, outerRouter) {
 }
 
 // 向服务器请求config配置
-axios.get('http://localhost:8080/api/router',{}).then(function (result) {
+axios.get('http://localhost:8080/mocks/router',{}).then(function (result) {
   if(result.data.status == '000'){
     dynamicRouter(router, result.data.data)
   }

@@ -76,7 +76,7 @@
       },
       loadData: function(){
         let self = this;
-        this.$http('http://localhost:8080/api/product/list').then(function(res){
+        this.$http('http://localhost:8080/mocks/product/list').then(function(res){
           self.products = res.data;
         })
       }

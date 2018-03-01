@@ -29,6 +29,6 @@ app.use(webpackHotMiddleware(compiler))
 app.use('/components',express.static('dist/components'))
 
 //mock api
-app.use('/api',mockapi.mock())
+app.use('/mocks',mockapi.mock())
 
 app.listen(config.dev.port, () => console.log('你的项目已经运行在http://%s:%s请等待编译完成后打开浏览器访问',config.dev.host,config.dev.port))
