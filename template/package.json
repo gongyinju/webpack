@@ -5,8 +5,7 @@
   "author": "chent <chent.zju@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev2": "node build/dev-server.js",
+    "dev": "node build/dev-server.js",
     "start": "npm run dev && npm run mock",
     "mock": "node server/app.js",
     "lint": "eslint --ext .js,.vue src",
